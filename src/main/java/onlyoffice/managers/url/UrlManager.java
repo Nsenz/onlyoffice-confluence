@@ -13,7 +13,7 @@ public interface UrlManager extends Serializable {
     public String getAttachmentDataUri();
     public String getSaveAsUri();
     public String getCallbackUrl(Long attachmentId);
-    public String getGobackUrl(Long attachmentId, HttpServletRequest request);
+    public String getGobackUrl(Long attachmentId, String referer);
     public String getCreateUri(Long pageId, String ext);
     public String replaceDocEditorURLToInternal(String url);
     public String getDocServiceApiUrl();

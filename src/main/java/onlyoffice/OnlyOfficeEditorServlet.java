@@ -96,6 +96,7 @@ public class OnlyOfficeEditorServlet extends HttpServlet {
 
         String attachmentIdString = request.getParameter("attachmentId");
         String actionData = request.getParameter("actionData");
+        String referer = request.getHeader("referer");
 
         if (attachmentIdString == null) {
             fileName = request.getParameter("fileName");
@@ -133,7 +134,7 @@ public class OnlyOfficeEditorServlet extends HttpServlet {
 
                 fileUrl = urlManager.getFileUri(attachmentId);
 
-                gobackUrl = urlManager.getGobackUrl(attachmentId, request);
+                gobackUrl = urlManager.getGobackUrl(attachmentId, referer);
 
                 if (attachmentUtil.checkAccess(attachmentId, user, true)) {
                     callbackUrl = urlManager.getCallbackUrl(attachmentId);
