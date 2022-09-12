@@ -77,14 +77,14 @@ public class DocumentManagerImpl implements DocumentManager {
         return size > 0 ? size : 5 * 1024 * 1024;
     }
 
-    public String getKeyOfFile(Long attachmentId) {
+    public String getKeyOfFile(Long attachmentId, boolean embedded) {
         String key = attachmentUtil.getCollaborativeEditingKey(attachmentId);
         if (key == null) {
             String hashCode = attachmentUtil.getHashCode(attachmentId);
             key = generateRevisionId(hashCode);
         }
 
-        return key;
+        return embedded ? key : key + "_embedded";
     }
 
     private String generateRevisionId(String expectedKey) {

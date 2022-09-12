@@ -127,7 +127,7 @@ public class OnlyOfficeEditorServlet extends HttpServlet {
             if (attachmentUtil.checkAccess(attachmentId, user, false)) {
                 type = documentManager.getEditorType(request.getHeader("USER-AGENT"));
 
-                key = documentManager.getKeyOfFile(attachmentId);
+                key = documentManager.getKeyOfFile(attachmentId, false);
 
                 fileName = attachmentUtil.getFileName(attachmentId);
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DocumentManager extends Serializable {
     public long getMaxFileSize();
-    public String getKeyOfFile(Long attachmentId);
+    public String getKeyOfFile(Long attachmentId, boolean embedded);
     public String createHash(String str);
     public String readHash(String base64);
     public String getCorrectName(String fileName, String fileExt, Long pageID);

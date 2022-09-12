@@ -172,7 +172,7 @@ public class OnlyOfficeHistoryServlet extends HttpServlet {
             for (Attachment attachment : attachments) {
                 Version version = new Version();
                 version.setVersion(attachment.getVersion());
-                version.setKey(documentManager.getKeyOfFile(attachment.getId()));
+                version.setKey(documentManager.getKeyOfFile(attachment.getId(), false));
                 version.setCreated(dateFormatter.formatDateTime(attachment.getCreationDate()));
                 version.setUser(attachment.getCreator().getName(), attachment.getCreator().getFullName());
 
@@ -246,7 +246,7 @@ public class OnlyOfficeHistoryServlet extends HttpServlet {
                 if (attachment.getVersion() == version) {
                     versionData = new VersionData();
                     versionData.setVersion(attachment.getVersion());
-                    versionData.setKey(documentManager.getKeyOfFile(attachment.getId()));
+                    versionData.setKey(documentManager.getKeyOfFile(attachment.getId(), false));
                     versionData.setUrl(urlManager.getFileUri(attachment.getId()));
                     versionData.setFileType(attachment.getFileExtension());
 
@@ -255,7 +255,7 @@ public class OnlyOfficeHistoryServlet extends HttpServlet {
                         boolean adjacentVersions = (attachment.getVersion() - prevVersion.getVersion()) == 1;
                         if (adjacentVersions) {
                             versionData.setChangesUrl(urlManager.getAttachmentDiffUri(attachment.getId()));
-                            versionData.setPrevious(documentManager.getKeyOfFile(prevVersion.getId()), urlManager.getFileUri(prevVersion.getId()), prevVersion.getFileExtension());
+                            versionData.setPrevious(documentManager.getKeyOfFile(prevVersion.getId(), false), urlManager.getFileUri(prevVersion.getId()), prevVersion.getFileExtension());
                         }
                     }
                     break;
