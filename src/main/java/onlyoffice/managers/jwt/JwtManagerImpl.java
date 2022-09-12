@@ -62,7 +62,7 @@ public class JwtManagerImpl implements JwtManager {
                 && !((String) settings.get("onlyoffice.jwtSecret")).isEmpty();
     }
 
-    public String createToken(JSONObject payload) throws Exception {
+    public String createToken(String payload) throws Exception {
         JSONObject header = new JSONObject();
         header.put("alg", "HS256");
         header.put("typ", "JWT");
@@ -71,7 +71,7 @@ public class JwtManagerImpl implements JwtManager {
 
         String encHeader = enc.encodeToString(header.toString().getBytes("UTF-8"))
                 .replace("=", "");
-        String encPayload = enc.encodeToString(payload.toString().getBytes("UTF-8"))
+        String encPayload = enc.encodeToString(payload.getBytes("UTF-8"))
                 .replace("=", "");
 
         String hash = calculateHash(encHeader, encPayload);
