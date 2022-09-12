@@ -31,7 +31,6 @@ import javax.inject.Inject;
 import com.atlassian.plugin.webresource.WebResourceUrlProvider;
 import com.atlassian.plugin.webresource.UrlMode;
 import onlyoffice.managers.configuration.ConfigurationManager;
-import onlyoffice.managers.convert.ConvertManager;
 import onlyoffice.managers.document.DocumentManager;
 import onlyoffice.managers.jwt.JwtManager;
 import onlyoffice.managers.url.UrlManager;
@@ -52,8 +51,6 @@ public class OnlyOfficeEditorServlet extends HttpServlet {
     private final Logger log = LogManager.getLogger("onlyoffice.OnlyOfficeEditorServlet");
     private final long serialVersionUID = 1L;
 
-    private Properties properties;
-
     @ComponentImport
     private final LocaleManager localeManager;
     @ComponentImport
@@ -65,14 +62,12 @@ public class OnlyOfficeEditorServlet extends HttpServlet {
     private final AuthContext authContext;
     private final DocumentManager documentManager;
     private final AttachmentUtil attachmentUtil;
-    private final ConvertManager convertManager;
 
 
     @Inject
     public OnlyOfficeEditorServlet(LocaleManager localeManager, WebResourceUrlProvider webResourceUrlProvider,
             UrlManager urlManager, JwtManager jwtManager, ConfigurationManager configurationManager,
-            AuthContext authContext, DocumentManager documentManager, AttachmentUtil attachmentUtil,
-            ConvertManager convertManager) {
+            AuthContext authContext, DocumentManager documentManager, AttachmentUtil attachmentUtil) {
         this.localeManager = localeManager;
         this.webResourceUrlProvider = webResourceUrlProvider;
         this.urlManager = urlManager;
@@ -81,7 +76,6 @@ public class OnlyOfficeEditorServlet extends HttpServlet {
         this.authContext = authContext;
         this.documentManager = documentManager;
         this.attachmentUtil = attachmentUtil;
-        this.convertManager = convertManager;
     }
 
     @Override
@@ -89,13 +83,6 @@ public class OnlyOfficeEditorServlet extends HttpServlet {
         if (!authContext.checkUserAuthorisation(request, response)) {
             return;
         }
-
-        String apiUrl = urlManager.getPublicDocEditorUrl();
-        if (apiUrl == null || apiUrl.isEmpty()) {
-            apiUrl = "";
-        }
-
-        properties = configurationManager.getProperties();
 
         String type = "";
         String callbackUrl = "";
@@ -166,11 +153,11 @@ public class OnlyOfficeEditorServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = response.getWriter();
 
-        writer.write(getTemplate(attachmentId, type, apiUrl, callbackUrl, fileUrl, key, fileName, user, gobackUrl,
+        writer.write(getTemplate(attachmentId, type, callbackUrl, fileUrl, key, fileName, user, gobackUrl,
                 actionData, errorMessage));
     }
 
-    private String getTemplate(Long attachmentId, String type, String apiUrl, String callbackUrl, String fileUrl, String key, String fileName,
+    private String getTemplate(Long attachmentId, String type, String callbackUrl, String fileUrl, String key, String fileName,
             ConfluenceUser user, String gobackUrl, String actionData, String errorMessage) throws UnsupportedEncodingException {
         Map<String, Object> defaults = MacroUtils.defaultVelocityContext();
         Map<String, String> config = new HashMap<String, String>();
@@ -181,7 +168,7 @@ public class OnlyOfficeEditorServlet extends HttpServlet {
         String documentType = documentManager.getDocType(docExt);
         Long pageId = attachmentUtil.getAttachmentPageId(attachmentId);
 
-        config.put("docserviceApiUrl", apiUrl + properties.getProperty("files.docservice.url.api"));
+        config.put("docserviceApiUrl", urlManager.getDocServiceApiUrl());
         config.put("errorMessage", errorMessage);
         config.put("docTitle", docTitle);
         config.put("favicon", webResourceUrlProvider.getStaticPluginResourceUrl(
