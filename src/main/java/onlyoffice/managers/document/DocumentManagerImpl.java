@@ -35,6 +35,7 @@ import com.atlassian.plugin.PluginAccessor;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.message.I18nResolver;
 import com.atlassian.spring.container.ContainerManager;
+import onlyoffice.model.DocumentType;
 import onlyoffice.utils.attachment.AttachmentUtil;
 import onlyoffice.managers.configuration.ConfigurationManager;
 import org.apache.log4j.LogManager;
@@ -195,14 +196,20 @@ public class DocumentManagerImpl implements DocumentManager {
         return attachment.getContentId().asLong();
     }
 
-    public String getDocType(String ext) {
+    public DocumentType getDocType(Long attachmentId) {
+        String fileExt = attachmentUtil.getFileExt(attachmentId);
+
+        return getDocType(fileExt);
+    }
+
+    public DocumentType getDocType(String fileExt) {
         List<String> wordFormats = Arrays.asList(configurationManager.getProperty("docservice.type.word").split("\\|"));
         List<String> cellFormats = Arrays.asList(configurationManager.getProperty("docservice.type.cell").split("\\|"));
         List<String> slideFormats = Arrays.asList(configurationManager.getProperty("docservice.type.slide").split("\\|"));
 
-        if (wordFormats.contains(ext)) return "word";
-        if (cellFormats.contains(ext)) return "cell";
-        if (slideFormats.contains(ext)) return "slide";
+        if (wordFormats.contains(fileExt)) return DocumentType.WORD;
+        if (cellFormats.contains(fileExt)) return DocumentType.CELL;
+        if (slideFormats.contains(fileExt)) return DocumentType.SLIDE;
 
         return null;
     }
@@ -245,7 +252,7 @@ public class DocumentManagerImpl implements DocumentManager {
     }
 
     public boolean isViewable(String fileExtension) {
-        String docType = getDocType(fileExtension);
+        DocumentType docType = getDocType(fileExtension);
         return docType != null;
     }
 

@@ -30,6 +30,7 @@ import onlyoffice.managers.configuration.ConfigurationManager;
 import onlyoffice.managers.document.DocumentManager;
 import onlyoffice.managers.jwt.JwtManager;
 import onlyoffice.managers.url.UrlManager;
+import onlyoffice.model.DocumentType;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpException;
 import org.apache.http.HttpStatus;
@@ -78,14 +79,14 @@ public class ConvertManagerImpl implements ConvertManager {
     }
 
     public String convertsTo(String ext) {
-        String docType = documentManager.getDocType(ext);
-        if (docType != null) {
+        DocumentType documentType = documentManager.getDocType(ext);
+        if (documentType != null) {
             if (ext.equals("docx")) return "docxf";
             if (ext.equals("docxf")) return "oform";
 
-            if (docType.equals("word")) return "docx";
-            if (docType.equals("cell")) return "xlsx";
-            if (docType.equals("slide")) return "pptx";
+            if (documentType.equals(DocumentType.WORD)) return "docx";
+            if (documentType.equals(DocumentType.CELL)) return "xlsx";
+            if (documentType.equals(DocumentType.SLIDE)) return "pptx";
         }
         return null;
     }
