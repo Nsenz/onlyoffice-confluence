@@ -2,6 +2,7 @@ package onlyoffice.managers.document;
 
 import com.atlassian.confluence.user.ConfluenceUser;
 import onlyoffice.model.DocumentType;
+import onlyoffice.model.Type;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -16,7 +17,7 @@ public interface DocumentManager extends Serializable {
     public Long createDemo(String fileName, String fileExt, Long pageID, ConfluenceUser user) throws IOException;
     public DocumentType getDocType(Long attachmentId);
     public DocumentType getDocType(String ext);
-    public String getEditorType (String userAgent);
+    public Type getEditorType (String userAgent);
     public String getMimeType(String name);
     public boolean isEditable(String fileExtension);
     public boolean isFillForm(String fileExtension);

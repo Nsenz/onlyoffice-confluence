@@ -36,6 +36,7 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.message.I18nResolver;
 import com.atlassian.spring.container.ContainerManager;
 import onlyoffice.model.DocumentType;
+import onlyoffice.model.Type;
 import onlyoffice.utils.attachment.AttachmentUtil;
 import onlyoffice.managers.configuration.ConfigurationManager;
 import org.apache.log4j.LogManager;
@@ -225,12 +226,12 @@ public class DocumentManagerImpl implements DocumentManager {
         return mimeType != null ? mimeType : "application/octet-stream";
     }
 
-    public String getEditorType (String userAgent) {
+    public Type getEditorType (String userAgent) {
         Pattern pattern = Pattern.compile(userAgentMobile, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
         if (userAgent != null && pattern.matcher(userAgent).find()) {
-            return "mobile";
+            return Type.MOBILE;
         } else {
-            return "desktop";
+            return Type.DESKTOP;
         }
     }
 
