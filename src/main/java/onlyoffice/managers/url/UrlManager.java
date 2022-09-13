@@ -17,4 +17,5 @@ public interface UrlManager extends Serializable {
     public String getCreateUri(Long pageId, String ext);
     public String replaceDocEditorURLToInternal(String url);
     public String getDocServiceApiUrl();
+    public String getFaviconUrl(Long attachmentId);
 }
