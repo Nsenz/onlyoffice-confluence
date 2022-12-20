@@ -26,5 +26,7 @@ public enum DocumentType {
     @SerializedName("cell")
     CELL,
     @SerializedName("slide")
-    SLIDE
+    SLIDE,
+    @SerializedName("form")
+    FORM
 }
