@@ -1,5 +1,9 @@
 # Change Log
 
+## 
+## Added
+- download as
+
 ## 4.1.0
 ## Added
 - button ONLYOFFICE in confluence preview 
