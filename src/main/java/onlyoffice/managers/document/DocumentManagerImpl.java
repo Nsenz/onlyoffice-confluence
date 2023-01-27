@@ -80,6 +80,19 @@ public class DocumentManagerImpl implements DocumentManager {
         return size > 0 ? size : 5 * 1024 * 1024;
     }
 
+    @Override
+    public long getConvertationFileSizeMax() {
+        long size;
+        try {
+            String filesizeMax = configurationManager.getProperty("convertation-filesize-max");
+            size = Long.parseLong(filesizeMax);
+        } catch (Exception ex) {
+            size = 0;
+        }
+
+        return size > 0 ? size : 5 * 1024 * 1024;
+    }
+
     public String getKeyOfFile(Long attachmentId) {
         String key = attachmentUtil.getCollaborativeEditingKey(attachmentId);
         if (key == null) {
